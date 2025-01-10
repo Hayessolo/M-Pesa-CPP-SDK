@@ -1,0 +1,24 @@
+// .devcontainer/devcontainer.json
+{
+    "name": "M-PESA C++ SDK Development",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cmake-tools",
+                "twxs.cmake",
+                "eamodio.gitlens"
+            ],
+            "settings": {
+                "cmake.configureOnOpen": true,
+                "editor.formatOnSave": true,
+                "C_Cpp.clang_format_style": "file"
+            }
+        }
+    },
+    "forwardPorts": [8080],
+    "postCreateCommand": "cmake -B build && cmake --build build"
+}

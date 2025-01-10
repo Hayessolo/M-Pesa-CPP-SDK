@@ -1,32 +1,28 @@
-# Prerequisites
-*.d
 
-# Compiled Object files
-*.slo
-*.lo
+# Build directories
+build/
+cmake-build-*/
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Compiled files
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
 *.exe
 *.out
-*.app
+*.dll
+*.so
+*.dylib
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Environment files
+.env
