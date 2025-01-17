@@ -1,4 +1,3 @@
-# .devcontainer/Dockerfile
 FROM mcr.microsoft.com/devcontainers/cpp:1-debian-12
 
 # Install additional packages
