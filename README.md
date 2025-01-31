@@ -79,21 +79,21 @@ export MPESA_CONSUMER_SECRET="your_secret"
 - 🚀 [Suggest a Feature](https://github.com/yourusername/mpesa-cpp-sdk/issues/new?template=feature_request.md)  
 📖 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 ## 📜 License
-Apache-2.0 © [Your Name](https://github.com/yourusername).  
+Apache-2.0 © [Hayes Fank](https://github.com/Hayessolo).  
 M-Pesa® is a registered trademark of Safaricom PLC.
 
 ---
 
 ## 👨💻 Author
 **Hayes Solo**  
-[![GitHub](https://img.shields.io/badge/GitHub-YourUsername-blue)](https://github.com/yourusername)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-YourProfile-informational)](https://linkedin.com/in/yourprofile)
+[![GitHub](https://img.shields.io/badge/GitHub-YourUsername-blue)](https://github.com/Hayessolo)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-YourProfile-informational)](https://linkedin.com/in/hayes-frank-b48700174)
 
 A passionate software engineer and fintech enthusiast dedicated to building tools that bridge technology and financial inclusion in Africa. With a focus on high-performance systems, this SDK reflects my commitment to simplifying access to M-Pesa's transformative capabilities.
 
 **Let’s Connect!**  
-📧 Email: your.email@domain.com  
-🐦 Twitter: [@yourhandle](https://twitter.com/yourhandle)
+📧 Email: solohayes6@gmail.comn  
+🐦 Twitter: [@Hayes Frank](https://twitter.com/@myworld_net)
 
 ---
 
