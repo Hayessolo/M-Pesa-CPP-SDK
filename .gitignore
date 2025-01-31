@@ -24,4 +24,4 @@ cmake-build-*/
 *.pdb
 
 # Environment files
-.env
+.envauth_credentials.env
