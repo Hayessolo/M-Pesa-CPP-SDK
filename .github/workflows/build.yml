@@ -17,7 +17,17 @@ jobs:
             cmake \
             build-essential \
             g++ \
-            git
+            git \
+            libgtest-dev \
+            googletest
+          # Build and install GTest
+          cd /usr/src/googletest
+          sudo cmake .
+          sudo make
+          sudo cp lib/*.a /usr/lib
+          sudo ln -s /usr/lib/libgtest.a /usr/local/lib/libgtest.a
+          sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/libgtest_main.a
+          cd -
           # Install nlohmann/json
           sudo mkdir -p /usr/local/include/nlohmann
           sudo wget -q https://github.com/nlohmann/json/releases/download/v3.11.2/json.hpp -O /usr/local/include/nlohmann/json.hpp
