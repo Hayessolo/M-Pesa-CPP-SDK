@@ -1,35 +1,8 @@
 
 
 ```markdown
-# M-Pesa C++ SDK [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)][![CI/CD](https://github.com/yourusername/mpesa-cpp-sdk/actions/workflows/build.yml/badge.svg)]()
-
-**Powering Africa’s Largest Fintech Platform**  
-Seamlessly integrate with M-Pesa, Africa’s mobile money giant processing **61+ million transactions daily**. This SDK brings secure, high-performance C++ access to M-Pesa’s APIs for payments, transfers, and financial services.
-## 🚀 Features  
-- **OAuth2 Authentication**: Token management with auto-refresh and sandbox/production support.  
-- **Thread-Safe Design**: Built for high-concurrency server environments.  
-- **Comprehensive APIs**:  
-  - STK Push (Lipa Na M-Pesa)  
-  - B2B/B2C Payments  
-  - Transaction Status & Reversals  
-  - Account Balance Queries  
-- **CMake Integration**: Easy cross-platform builds.  
-- **OpenSSL Security**: Certificate pinning and encryption.  
-- **Error Handling**: Detailed error codes (e.g., `AuthErrorCode::INVALID_CREDENTIALS`).  
-## 🚀 Quick Start
-
-### Prerequisites
-- C++17+ compiler
-- CMake 3.10+
-- libcurl & OpenSSL
-
-### Installation
-```bash
-git clone https://github.com/yourusername/mpesa-cpp-sdk.git
-cd mpesa-cpp-sdk && mkdir build && cd build
-cmake .. && make
-```
-
+This robust C++ SDK provides secure and efficient access to M-Pesa's [APIs](https://developer.safaricom.co.ke/), enabling developers to build high-performance applications for payments, transfers, and other financial services.
+  
 ### Example: Authentication
 ```cpp
 #include <mpesa/auth.h>
@@ -61,23 +34,12 @@ export MPESA_CONSUMER_KEY="your_key"
 export MPESA_CONSUMER_SECRET="your_secret"
 ```
 
-
-## 🛠 Roadmap
-- [x] Authentication & Token Management
-- [ ] STK Push (Lipa Na M-Pesa)
-- [ ] B2C/B2B Payments
-- [ ] Transaction Status Queries
-- [ ] Account Balance API
-
 ## 📚 Documentation
-- [Architecture Guide](DOCUMENTATION.md) - Project structure and design philosophy
-- [Testing Framework](DOCUMENTATION.md#tests-directory-tests) - Test types, guidelines, execution
+- [Architecture Guide](DOCUMENTATION.md) -  Provides insights into the SDK's design and structure.
+- [Testing Framework](DOCUMENTATION.md#tests-directory-tests) - Describes the testing methodology and guidelines for contributions.
 
 ## 👥 Contributing
-**Documentation is our superpower!** We welcome contributions to code, tests, and especially **documentation** (examples, guides, API references).    
-- 🐛 [Report a Bug](https://github.com/yourusername/mpesa-cpp-sdk/issues/new?template=bug_report.md)  
-- 🚀 [Suggest a Feature](https://github.com/yourusername/mpesa-cpp-sdk/issues/new?template=feature_request.md)  
-📖 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions are welcome! Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on reporting bugs, suggesting features, and submitting code changes.  
 ## 📜 License
 Apache-2.0 © [Hayes Fank](https://github.com/Hayessolo).  
 M-Pesa® is a registered trademark of Safaricom PLC.
@@ -87,15 +49,13 @@ M-Pesa® is a registered trademark of Safaricom PLC.
 ## 👨💻 Author
 **Hayes Solo**  
 [![GitHub](https://img.shields.io/badge/GitHub-Hayes-blue)](https://github.com/Hayessolo)
-[![LinkedIn](https://img.shields.io/badge/HayesFrank)](https://linkedin.com/in/hayes-frank-b48700174)
-
-A passionate software engineer and fintech enthusiast dedicated to building tools that bridge technology and financial inclusion in Africa. With a focus on high-performance systems, this SDK reflects my commitment to simplifying access to M-Pesa's transformative capabilities.
-
+[![LinkedIn](https://img.shields.io/badge/LinkedIn)](https://linkedin.com/in/hayes-frank-b48700174)
+Not affiliated with Safaricom.
 **Let’s Connect!**  
 📧 Email: solohayes6@gmail.comn  
 🐦 Twitter: [@Hayes Frank](https://twitter.com/@myworld_net)
 
 ---
 
-**Powered by the heartbeat of Africa’s digital economy.** 💸
+
 ```
