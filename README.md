@@ -1,9 +1,6 @@
-
-
-```markdown
 # M-Pesa C++ SDK
-
-This robust C++ SDK provides secure and efficient access to M-Pesa's [APIs](https://developer.safaricom.co.ke/), enabling developers to build high-performance applications for payments, transfers, and other financial services.
+```
+A robust C++ SDK that provides secure and efficient access to M-Pesa's [APIs](https://developer.safaricom.co.ke/), enabling developers to build high-performance applications for payments, transfers, and other financial services.
 
 ## 🔑 API Credentials
 ### Getting Started
@@ -69,19 +66,6 @@ export MPESA_PASSKEY="YOUR_PASSKEY"
     "sandbox": true
 }
 ```
-
-[Rest of the content remains the same...]
-```
-
-I've made these key changes:
-1. Added the main title
-2. Added API Credentials section with setup instructions
-3. Merged and organized the configuration sections
-4. Added key emoji (🔑) for the credentials section
-5. Maintained consistent formatting throughout
-6. Added important credential parameters to all config examples
-
-Would you like me to show the rest of the README as well?
 
 ## Usage
 **C++17 or newer required**
