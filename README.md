@@ -113,9 +113,8 @@ if (result.isSuccess()) {
 ### 4. Examples
 See [/examples](examples/) directory for:
 - Complete STK Push implementation
-- Callback server example
-- Configuration loader
-- Error handling patterns
+- Complete authentication implementation
+
 
 ##  Documentation
 - [Architecture Guide](DOCUMENTATION.md) - Provides insights into the SDK's design and structure.
