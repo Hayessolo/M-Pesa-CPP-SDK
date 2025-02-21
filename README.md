@@ -1,7 +1,7 @@
 # M-Pesa C++ SDK
-```
+
 A robust C++ SDK that provides secure and efficient access to [M-Pesa's APIs](https://developer.safaricom.co.ke/), enabling developers to build high-performance applications for payments, transfers, and other financial services.
-```
+
 ## API Credentials
 ### Getting Started
 1. **Register** at the [Safaricom Developer Portal](https://developer.safaricom.co.ke)
