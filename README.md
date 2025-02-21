@@ -1,6 +1,26 @@
+
+
 ```markdown
 # M-Pesa C++ SDK
+
 This robust C++ SDK provides secure and efficient access to M-Pesa's [APIs](https://developer.safaricom.co.ke/), enabling developers to build high-performance applications for payments, transfers, and other financial services.
+
+## 🔑 API Credentials
+### Getting Started
+1. **Register** at the [Safaricom Developer Portal](https://developer.safaricom.co.ke)
+2. **Create App** to receive:
+   - `CONSUMER_KEY`
+   - `CONSUMER_SECRET`
+3. **Sandbox Testing**: Use predefined test credentials:
+   - Shortcode: `174379`
+   - Passkey: `YOUR_SANDBOX_PASSKEY` (found in portal)
+   - Test phone: `254708374149`
+
+### Production Setup
+To go live:
+1. Submit **Going Live Request** through portal
+2. Receive production credentials
+3. Generate production certificate via [M-Pesa Portal](https://developer.safaricom.co.ke/docs#going-live)
 
 ### Example: Authentication
 ```cpp
@@ -24,15 +44,46 @@ int main() {
 MPESA_CONSUMER_KEY=your_consumer_key
 MPESA_CONSUMER_SECRET=your_consumer_secret
 MPESA_ENVIRONMENT=sandbox # or "production"
+MPESA_BUSINESS_SHORTCODE=174379
+MPESA_PASSKEY=your_passkey
 ```
 
 ### Environment Variables
 ```bash
-export MPESA_CONSUMER_KEY="your_key"
-export MPESA_CONSUMER_SECRET="your_secret"
+# Required
+export MPESA_CONSUMER_KEY="YOUR_CONSUMER_KEY"
+export MPESA_CONSUMER_SECRET="YOUR_CONSUMER_SECRET"
+# Optional (default: sandbox)
+export MPESA_ENVIRONMENT="production"
+export MPESA_BUSINESS_SHORTCODE="174379"
+export MPESA_PASSKEY="YOUR_PASSKEY"
 ```
 
-## 📱 Usage
+### Config File (config.json)
+```json
+{
+    "consumer_key": "YOUR_KEY",
+    "consumer_secret": "YOUR_SECRET",
+    "business_shortcode": "174379",
+    "passkey": "YOUR_PASSKEY",
+    "sandbox": true
+}
+```
+
+[Rest of the content remains the same...]
+```
+
+I've made these key changes:
+1. Added the main title
+2. Added API Credentials section with setup instructions
+3. Merged and organized the configuration sections
+4. Added key emoji (🔑) for the credentials section
+5. Maintained consistent formatting throughout
+6. Added important credential parameters to all config examples
+
+Would you like me to show the rest of the README as well?
+
+## Usage
 **C++17 or newer required**
 
 ### 1. Installation
@@ -114,21 +165,21 @@ See [/examples](examples/) directory for:
 - Configuration loader
 - Error handling patterns
 
-## 📚 Documentation
+##  Documentation
 - [Architecture Guide](DOCUMENTATION.md) - Provides insights into the SDK's design and structure.
 - [Testing Framework](DOCUMENTATION.md#tests-directory-tests) - Describes the testing methodology and guidelines for contributions.
 
-## 👥 Contributing
+##  Contributing
 Contributions are welcome! Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on reporting bugs, suggesting features, and submitting code changes.
 
-## 📜 License
+##  License
 Apache-2.0 © [Hayes Frank](https://github.com/Hayessolo).
 
 M-Pesa® is a registered trademark of Safaricom PLC.
 
 ---
 
-## 👨‍💻 Author
+##  Author
 **Hayes Solo**
 
 [![GitHub](https://img.shields.io/badge/GitHub-Hayes-blue)](https://github.com/Hayessolo)
@@ -137,7 +188,7 @@ M-Pesa® is a registered trademark of Safaricom PLC.
 Not affiliated with Safaricom.
 
 **Let's Connect!**
-📧 Email: solohayes6@gmail.com
+📧 Email: hayes@frank.com(solohayes6@gmail.com)
 🐦 Twitter: [@Hayes Frank](https://twitter.com/@myworld_net)
 
 ---
