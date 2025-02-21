@@ -86,7 +86,7 @@ std::string token = auth_client.getAccessToken();
 ```
 
 ### 3. Core Services
-#### - M-Pesa Express (STK Push)
+####  M-Pesa Express (STK Push)
 ```cpp
 mpesa::stk::STKPushClient client(auth_client);
 mpesa::stk::STKPushRequest request{
@@ -142,4 +142,3 @@ Not affiliated with Safaricom.
  Twitter: [@Hayes Frank](https://twitter.com/@myworld_net)
 
 ---
-```
