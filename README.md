@@ -1,8 +1,9 @@
 # M-Pesa C++ SDK
 ```
+```
 A robust C++ SDK that provides secure and efficient access to M-Pesa's [APIs](https://developer.safaricom.co.ke/), enabling developers to build high-performance applications for payments, transfers, and other financial services.
 
-## 🔑 API Credentials
+## API Credentials
 ### Getting Started
 1. **Register** at the [Safaricom Developer Portal](https://developer.safaricom.co.ke)
 2. **Create App** to receive:
@@ -35,7 +36,7 @@ int main() {
 }
 ```
 
-## 🔧 Configuration
+## Configuration
 ### `.env` File
 ```ini
 MPESA_CONSUMER_KEY=your_consumer_key
@@ -172,7 +173,7 @@ M-Pesa® is a registered trademark of Safaricom PLC.
 Not affiliated with Safaricom.
 
 **Let's Connect!**
-📧 Email: hayes@frank.com(solohayes6@gmail.com)
+📧 Email: [hayes@frank.dev](solohayes6@gmail.com)
 🐦 Twitter: [@Hayes Frank](https://twitter.com/@myworld_net)
 
 ---
