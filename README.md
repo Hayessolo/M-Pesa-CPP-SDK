@@ -1,7 +1,7 @@
 # M-Pesa C++ SDK
 ```
 ```
-A robust C++ SDK that provides secure and efficient access to M-Pesa's [APIs](https://developer.safaricom.co.ke/), enabling developers to build high-performance applications for payments, transfers, and other financial services.
+A robust C++ SDK that provides secure and efficient access to [M-Pesa's APIs](https://developer.safaricom.co.ke/), enabling developers to build high-performance applications for payments, transfers, and other financial services.
 
 ## API Credentials
 ### Getting Started
@@ -42,7 +42,6 @@ int main() {
 MPESA_CONSUMER_KEY=your_consumer_key
 MPESA_CONSUMER_SECRET=your_consumer_secret
 MPESA_ENVIRONMENT=sandbox # or "production"
-MPESA_BUSINESS_SHORTCODE=174379
 MPESA_PASSKEY=your_passkey
 ```
 
@@ -53,7 +52,6 @@ export MPESA_CONSUMER_KEY="YOUR_CONSUMER_KEY"
 export MPESA_CONSUMER_SECRET="YOUR_CONSUMER_SECRET"
 # Optional (default: sandbox)
 export MPESA_ENVIRONMENT="production"
-export MPESA_BUSINESS_SHORTCODE="174379"
 export MPESA_PASSKEY="YOUR_PASSKEY"
 ```
 
@@ -113,37 +111,7 @@ if (result.isSuccess()) {
 }
 ```
 
-### 4. Callback Handling
-Implement an HTTPS endpoint:
-```cpp
-mpesa::stk::CallbackHandler handler([](auto& callback) {
-    if (callback.resultCode == 0) {
-        // Process successful payment
-    } else {
-        // Handle failure
-    }
-});
-// See examples/ for complete server implementation
-```
-
-### 5. Configuration
-**Environment Variables**
-```bash
-MPESA_CONSUMER_KEY=your_key
-MPESA_CONSUMER_SECRET=your_secret
-MPESA_ENVIRONMENT=sandbox
-```
-
-**Config File (JSON):**
-```json
-{
-    "consumer_key": "your_key",
-    "consumer_secret": "your_secret",
-    "sandbox": true
-}
-```
-
-### 6. Examples
+### 4. Examples
 See [/examples](examples/) directory for:
 - Complete STK Push implementation
 - Callback server example
@@ -173,8 +141,8 @@ M-Pesa® is a registered trademark of Safaricom PLC.
 Not affiliated with Safaricom.
 
 **Let's Connect!**
-📧 Email: [hayes@frank.dev](solohayes6@gmail.com)
-🐦 Twitter: [@Hayes Frank](https://twitter.com/@myworld_net)
+ Email: [hayes@frank.dev](solohayes6@gmail.com)
+ Twitter: [@Hayes Frank](https://twitter.com/@myworld_net)
 
 ---
 ```
