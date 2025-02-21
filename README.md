@@ -10,7 +10,6 @@ A robust C++ SDK that provides secure and efficient access to [M-Pesa's APIs](ht
    - `CONSUMER_KEY`
    - `CONSUMER_SECRET`
 3. **Sandbox Testing**: Use predefined test credentials:
-   - Shortcode: `174379`
    - Passkey: `YOUR_SANDBOX_PASSKEY` (found in portal)
    - Test phone: `254708374149`
 
@@ -110,7 +109,7 @@ if (result.isSuccess()) {
     std::cerr << "Error: " << result.getError();
 }
 ```
-
+- Expect ongoing updates and feature additions. Community contributions via pull requests are encouraged.
 ### 4. Examples
 See [/examples](examples/) directory for:
 - Complete STK Push implementation
