@@ -10,7 +10,6 @@ A robust C++ SDK that provides secure and efficient access to [M-Pesa's APIs](ht
    - `CONSUMER_SECRET`
 3. **Sandbox Testing**: Use predefined test credentials:
    - Passkey: `YOUR_SANDBOX_PASSKEY` (found in portal)
-   - Test phone: `254708374149`
 
 ### Production Setup
 To go live:
@@ -53,17 +52,6 @@ export MPESA_ENVIRONMENT="production"
 export MPESA_PASSKEY="YOUR_PASSKEY"
 ```
 
-### Config File (config.json)
-```json
-{
-    "consumer_key": "YOUR_KEY",
-    "consumer_secret": "YOUR_SECRET",
-    "business_shortcode": "174379",
-    "passkey": "YOUR_PASSKEY",
-    "sandbox": true
-}
-```
-
 ## Usage
 **C++17 or newer required**
 
@@ -79,8 +67,8 @@ Initialize with credentials:
 ```cpp
 // From environment variables
 auto config = mpesa::AuthConfig::from_env(); 
-// Or config file
-auto config = mpesa::AuthConfig::from_file("config.json");
+// Or .env file
+auto config = mpesa::AuthConfig::from_file("credentials.env");
 mpesa::Auth auth_client(config);
 std::string token = auth_client.getAccessToken();
 ```
