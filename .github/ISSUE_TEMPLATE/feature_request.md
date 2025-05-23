@@ -1,25 +1,41 @@
-```markdown
 ---
 name: 🚀 Feature Request
-about: Suggest a new M-Pesa API integration or improvement
+about: Suggest an enhancement or new functionality for the M-Pesa C++ SDK
 title: "[FEATURE] "
 labels: enhancement
+assignees: ''
 ---
 
-### 🚀 Is your feature request related to a problem?
-Ex: "I need to implement STK Push but the SDK lacks support..."
+## Problem Statement
+<!-- Describe the problem or limitation you're facing that this feature would address -->
 
-### 💡 Describe the Solution
-A clear, concise description of what you want to happen.
+## Proposed Solution
+<!-- A clear and concise description of what you want to happen -->
 
-### ⚙️ Proposed API Design (if applicable)
+## Use Case
+<!-- Describe how this feature would be used and who would benefit from it -->
+
+## Proposed API Design
+<!-- If applicable, provide a code example of how you envision the feature would be used -->
 ```cpp
-// Example of how you’d use the new feature
-mpesa::STKPush stk(config);
-stk.initiatePayment(phone, amount);
+// Example code showing how the feature might be implemented and used
+mpesa::ServiceName service(config);
+auto result = service.methodName(param1, param2);
+```
 
-🔄 Alternatives Considered
-A clear description of any alternative solutions.
+## Alternatives Considered
+<!-- Describe any alternative solutions or features you've considered -->
 
-📚 Additional Context
-Add any other context (M-Pesa API docs links, use cases).
+## Relevant M-Pesa API Documentation
+<!-- If this relates to a specific M-Pesa API, please provide links to the relevant documentation -->
+
+## Implementation Ideas
+<!-- Optional: If you have ideas about how this could be implemented, share them here -->
+
+## Additional Context
+<!-- Add any other context, screenshots, or examples about the feature request here -->
+
+## Would you be willing to contribute this feature?
+<!-- Let us know if you're interested in implementing this feature yourself -->
+- [ ] Yes, I'm interested in implementing this feature
+- [ ] No, I'm just suggesting the idea

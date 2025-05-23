@@ -1,101 +1,132 @@
+# M-Pesa C++ SDK
 
+A robust C++ SDK that provides secure and efficient access to [M-Pesa's APIs](https://developer.safaricom.co.ke/), enabling developers to build high-performance applications for payments, transfers, and other financial services.
 
-```markdown
-# M-Pesa C++ SDK [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)][![CI/CD](https://github.com/yourusername/mpesa-cpp-sdk/actions/workflows/build.yml/badge.svg)]()
+## API Credentials
+### Getting Started
+1. **Register** at the [Safaricom Developer Portal](https://developer.safaricom.co.ke)
+2. **Create App** to receive:
+   - `CONSUMER_KEY`
+   - `CONSUMER_SECRET`
+3. **Sandbox Testing**: Use predefined test credentials:
+   - Passkey: `YOUR_SANDBOX_PASSKEY` (found in portal)
 
-**Powering Africa’s Largest Fintech Platform**  
-Seamlessly integrate with M-Pesa, Africa’s mobile money giant processing **61+ million transactions daily**. This SDK brings secure, high-performance C++ access to M-Pesa’s APIs for payments, transfers, and financial services.
-## 🚀 Features  
-- **OAuth2 Authentication**: Token management with auto-refresh and sandbox/production support.  
-- **Thread-Safe Design**: Built for high-concurrency server environments.  
-- **Comprehensive APIs**:  
-  - STK Push (Lipa Na M-Pesa)  
-  - B2B/B2C Payments  
-  - Transaction Status & Reversals  
-  - Account Balance Queries  
-- **CMake Integration**: Easy cross-platform builds.  
-- **OpenSSL Security**: Certificate pinning and encryption.  
-- **Error Handling**: Detailed error codes (e.g., `AuthErrorCode::INVALID_CREDENTIALS`).  
-## 🚀 Quick Start
-
-### Prerequisites
-- C++17+ compiler
-- CMake 3.10+
-- libcurl & OpenSSL
-
-### Installation
-```bash
-git clone https://github.com/yourusername/mpesa-cpp-sdk.git
-cd mpesa-cpp-sdk && mkdir build && cd build
-cmake .. && make
-```
+### Production Setup
+To go live:
+1. Submit **Going Live Request** through portal
+2. Receive production credentials
+3. Generate production certificate via [M-Pesa Portal](https://developer.safaricom.co.ke/docs#going-live)
 
 ### Example: Authentication
 ```cpp
 #include <mpesa/auth.h>
-
 int main() {
-  try {
-    auto config = mpesa::AuthConfig::from_env(); // Load from environment variables
-    mpesa::Auth auth(config);
-    std::string token = auth.getAccessToken();
-    std::cout << "Access Token: " << token.substr(0, 10) << "...\n";
-  } catch (const mpesa::AuthenticationError& e) {
-    std::cerr << "Error: " << e.what() << " (Code: " << static_cast<int>(e.getErrorCode()) << ")\n";
-  }
-  return 0;
+    try {
+        auto config = mpesa::AuthConfig::from_env(); // Load from environment variables
+        mpesa::Auth auth(config);
+        std::string token = auth.getAccessToken();
+        std::cout << "Access Token: " << token.substr(0, 10) << "...\n";
+    } catch (const mpesa::AuthenticationError& e) {
+        std::cerr << "Error: " << e.what() << " (Code: " << static_cast<int>(e.getErrorCode()) << ")\n";
+    }
+    return 0;
 }
 ```
 
-## 🔧 Configuration
+## Configuration
 ### `.env` File
 ```ini
 MPESA_CONSUMER_KEY=your_consumer_key
 MPESA_CONSUMER_SECRET=your_consumer_secret
 MPESA_ENVIRONMENT=sandbox # or "production"
+MPESA_PASSKEY=your_passkey
 ```
 
 ### Environment Variables
 ```bash
-export MPESA_CONSUMER_KEY="your_key"
-export MPESA_CONSUMER_SECRET="your_secret"
+# Required
+export MPESA_CONSUMER_KEY="YOUR_CONSUMER_KEY"
+export MPESA_CONSUMER_SECRET="YOUR_CONSUMER_SECRET"
+# Optional (default: sandbox)
+export MPESA_ENVIRONMENT="production"
+export MPESA_PASSKEY="YOUR_PASSKEY"
 ```
 
+## Usage
+**C++17 or newer required**
 
-## 🛠 Roadmap
-- [x] Authentication & Token Management
-- [ ] STK Push (Lipa Na M-Pesa)
-- [ ] B2C/B2B Payments
-- [ ] Transaction Status Queries
-- [ ] Account Balance API
+### 1. Installation
+Add to your CMake project:
+```cmake
+add_subdirectory(M-Pesa-CPP-SDK)
+target_link_libraries(your_target PRIVATE mpesa)
+```
 
-## 📚 Documentation
-- [Architecture Guide](DOCUMENTATION.md) - Project structure and design philosophy
-- [Testing Framework](DOCUMENTATION.md#tests-directory-tests) - Test types, guidelines, execution
+### 2. Authentication
+Initialize with credentials:
+```cpp
+// From environment variables
+auto config = mpesa::AuthConfig::from_env(); 
+// Or .env file
+auto config = mpesa::AuthConfig::from_file("credentials.env");
+mpesa::Auth auth_client(config);
+std::string token = auth_client.getAccessToken();
+```
 
-## 👥 Contributing
-**Documentation is our superpower!** We welcome contributions to code, tests, and especially **documentation** (examples, guides, API references).    
-- 🐛 [Report a Bug](https://github.com/yourusername/mpesa-cpp-sdk/issues/new?template=bug_report.md)  
-- 🚀 [Suggest a Feature](https://github.com/yourusername/mpesa-cpp-sdk/issues/new?template=feature_request.md)  
-📖 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-## 📜 License
-Apache-2.0 © [Hayes Fank](https://github.com/Hayessolo).  
+### 3. Core Services
+####  M-Pesa Express (STK Push)
+```cpp
+mpesa::stk::STKPushClient client(auth_client);
+mpesa::stk::STKPushRequest request{
+    .businessShortCode = "174379",
+    .transactionType = mpesa::stk::TransactionType::CustomerPayBillOnline,
+    .amount = "100",
+    .partyA = "254712345678",
+    .partyB = "174379",
+    .phoneNumber = "254712345678",
+    .callBackURL = "https://yourdomain.com/callback",
+    .accountReference = "Order123",
+    .transactionDesc = "Payment"
+};
+auto result = client.initiateSTKPush(request).get();
+if (result.isSuccess()) {
+    auto response = result.getValue();
+    std::cout << "Checkout ID: " << response.checkoutRequestID;
+} else {
+    std::cerr << "Error: " << result.getError();
+}
+```
+- Expect ongoing updates and feature additions. Community contributions via pull requests are encouraged.
+### 4. Examples
+See [/examples](examples/) directory for:
+- Complete STK Push implementation
+- Complete authentication implementation
+
+
+##  Documentation
+- [Architecture Guide](DOCUMENTATION.md) - Provides insights into the SDK's design and structure.
+- [Testing Framework](DOCUMENTATION.md#tests-directory-tests) - Describes the testing methodology and guidelines for contributions.
+
+##  Contributing
+Contributions are welcome! Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on reporting bugs, suggesting features, and submitting code changes.
+
+##  License
+Apache-2.0 © [Hayes Frank](https://github.com/Hayessolo).
+
 M-Pesa® is a registered trademark of Safaricom PLC.
 
 ---
 
-## 👨💻 Author
-**Hayes Solo**  
+##  Author
+**Hayes Solo**
+
 [![GitHub](https://img.shields.io/badge/GitHub-Hayes-blue)](https://github.com/Hayessolo)
-[![LinkedIn](https://img.shields.io/badge/HayesFrank)](https://linkedin.com/in/hayes-frank-b48700174)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Hayes_Frank-blue)](https://linkedin.com/in/hayes-frank-b48700174)
 
-A passionate software engineer and fintech enthusiast dedicated to building tools that bridge technology and financial inclusion in Africa. With a focus on high-performance systems, this SDK reflects my commitment to simplifying access to M-Pesa's transformative capabilities.
+Not affiliated with Safaricom.
 
-**Let’s Connect!**  
-📧 Email: solohayes6@gmail.comn  
-🐦 Twitter: [@Hayes Frank](https://twitter.com/@myworld_net)
+**Let's Connect!**
+ Email: [hayes@frank.dev](solohayes6@gmail.com)
+ Twitter: [@Hayes Frank](https://twitter.com/@myworld_net)
 
 ---
-
-**Powered by the heartbeat of Africa’s digital economy.** 💸
-```

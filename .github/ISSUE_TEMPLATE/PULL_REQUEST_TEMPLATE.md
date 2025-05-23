@@ -1,28 +1,53 @@
-```markdown
 ---
 name: Pull Request
-about: Submit changes to the SDK
+about: Submit changes to the M-Pesa C++ SDK
 title: "[PR] "
 ---
 
-### 🔗 Related Issue
-Closes #ISSUE_NUMBER
+## Related Issue
+<!-- Please link the issue that this PR addresses -->
+Closes #
 
-### 📝 Proposed Changes
-- Change 1: 
-- Change 2: 
+## Description
+<!-- Provide a clear and concise description of the changes implemented in this PR -->
 
-### 🛠 Type of Change
-- [ ] Bug fix (non-breaking)
-- [ ] New feature (non-breaking)
-- [ ] Breaking change (fix/feature that breaks existing behavior)
+## Proposed Changes
+<!-- List the specific changes you've made -->
+- 
+- 
+- 
+
+## Type of Change
+<!-- Please check the appropriate option(s) -->
+- [ ] Bug fix (non-breaking change addressing an issue)
+- [ ] New feature (non-breaking change adding functionality)
+- [ ] Breaking change (fix or feature that alters existing functionality)
+- [ ] Performance improvement
+- [ ] Code refactoring
 - [ ] Documentation update
+- [ ] Test addition/update
+- [ ] CI/CD configuration change
 
-### ✅ Checklist
-- [ ] Code follows Google C++ Style Guide
-- [ ] Documentation updated (README, code comments)
-- [ ] Tests added/updated
-- [ ] CI/CD passes (build, tests, linters)
+## Testing Performed
+<!-- Describe the testing you've done to verify your changes -->
+- [ ] Unit tests added/updated
+- [ ] Integration tests added/updated
+- [ ] Manual testing performed
 
-### 📌 Notes
-Any additional context for reviewers.
+## Checklist
+<!-- Please check all that apply -->
+- [ ] My code follows the Google C++ Style Guide
+- [ ] I have performed a self-review of my code
+- [ ] I have commented my code, particularly in complex areas
+- [ ] I have updated the documentation accordingly
+- [ ] My changes generate no new warnings or compiler errors
+- [ ] All existing tests pass locally
+- [ ] I have added tests that prove my fix/feature works
+- [ ] New and existing unit tests pass with my changes
+- [ ] Any dependent changes have been merged and published
+
+## Additional Context
+<!-- Add any other context about the PR here. If this PR introduces performance changes, please describe them and provide benchmarks if possible -->
+
+## Screenshots
+<!-- If applicable, add screenshots to help explain your changes -->
