@@ -1,95 +1,112 @@
 # Contributing to M-Pesa C++ SDK
 
-🌟 **First, thank you!** By contributing, you’re helping build tools that power Africa’s largest fintech ecosystem (61M+ daily transactions!). Let’s make this SDK bulletproof. 🚀
+Thank you for your interest in contributing to the M-Pesa C++ SDK! This document provides guidelines and instructions to help you contribute effectively to this project that powers Africa's largest fintech ecosystem.
 
-## 📋 Table of Contents
-- [Types of Contributions](#-types-of-contributions)
-- [Development Setup](#-development-setup)
-- [Code & Documentation Standards](#-code--documentation-standards)
-- [Pull Request Guidelines](#-pull-request-guidelines)
-- [Code of Conduct](#-code-of-conduct)
+## Table of Contents
+- [Types of Contributions](#types-of-contributions)
+- [Reporting Bugs](#reporting-bugs)
+- [Requesting Features](#requesting-features)
+- [Development Setup](#development-setup)
+- [Code & Documentation Standards](#code--documentation-standards)
+- [Pull Request Process](#pull-request-process)
+- [Code of Conduct](#code-of-conduct)
 
-## 🌟 Types of Contributions
-We welcome:
-- **Code**: Features, bug fixes, performance improvements.
-- **Documentation**: Fix typos, improve guides, add examples.
-- **Tests**: Expand coverage for edge cases.
-- **Feedback**: API design suggestions, usability reports.
+## Types of Contributions
 
-### 🐛 Reporting Bugs
-1. **Search existing issues** to avoid duplicates.
-2. Use the [Bug Report Template](.github/ISSUE_TEMPLATE/bug_report.md).
-3. Include:
-   - Environment (OS, compiler, dependencies).
-   - Steps to reproduce.
-   - Expected vs. actual behavior.
+We welcome various types of contributions:
+- **Code**: New features, bug fixes, and performance improvements
+- **Documentation**: Corrections, clarifications, and additional examples
+- **Tests**: Additional test coverage, especially for edge cases
+- **Feedback**: Suggestions on API design and usability
 
-### 🚀 Proposing Features
-1. **Open a discussion** to gauge interest.
-2. Use the [Feature Request Template](.github/ISSUE_TEMPLATE/feature_request.md).
-3. Explain:
-   - The problem your feature solves.
-   - Proposed API design (if applicable).
+## Reporting Bugs
 
-## 🛠 Development Setup
+When reporting bugs, please use our [Bug Report Template](.github/ISSUE_TEMPLATE/bug_report.md) and include:
+- Your environment details (OS, compiler, dependencies)
+- Steps to reproduce the issue
+- Expected behavior vs. actual behavior
+- Relevant logs or error messages
+
+Please search existing issues first to avoid duplicates.
+
+## Requesting Features
+
+For feature requests, please use our [Feature Request Template](.github/ISSUE_TEMPLATE/feature_request.md) and explain:
+- The problem your feature would solve
+- Your proposed solution and API design (if applicable)
+- Any alternatives you've considered
+
+Consider opening a discussion first to gauge interest in major feature additions.
+
+## Development Setup
 
 ### Prerequisites
-- **C++17+** (GCC/Clang/MSVC)
-- **CMake 3.10+**
-- **libcurl** & **OpenSSL**
-- **Doxygen** (for documentation builds)
+- C++17 compatible compiler (GCC, Clang, MSVC)
+- CMake 3.10 or newer
+- libcurl and OpenSSL development libraries
+- Doxygen (for building documentation)
 
 ### Build & Test
 ```bash
-git clone https://github.com/yourusername/mpesa-cpp-sdk.git
-cd mpesa-cpp-sdk
+# Clone the repository
+git clone https://github.com/Hayessolo/M-Pesa-CPP-SDK.git
+cd M-Pesa-CPP-SDK
+
+# Create a build directory
 mkdir build && cd build
-cmake -DMPESA_BUILD_TESTS=ON ..  # Enable tests
-make
+
+# Configure with CMake
+cmake -DCMAKE_BUILD_TYPE=Debug -DMPESA_BUILD_TESTS=ON ..
+
+# Build
+cmake --build .
 
 # Run tests
 ctest --output-on-failure
 
 # Build documentation (requires Doxygen)
-make docs
-📜 Code & Documentation Standards
-Code Guidelines
-Follow Google C++ Style Guide.
+cmake --build . --target docs
+```
 
-Use clang-format for consistency (config in .clang-format).
+## Code & Documentation Standards
 
-Document public APIs with Doxygen:
+### Code Guidelines
+- Follow the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
+- Use clang-format for consistent formatting (config provided in `.clang-format`)
+- Write meaningful commit messages that explain why changes were made
 
-cpp
-Copy
-/// @brief Fetch M-Pesa access token.
-/// @throws AuthenticationError If credentials are invalid.
-std::string getAccessToken();
-Documentation Principles
-Every PR must update documentation if it changes behavior.
+### Documentation Requirements
+- Document all public APIs using Doxygen-style comments:
+  ```cpp
+  /// @brief Fetch M-Pesa access token.
+  /// @throws AuthenticationError If credentials are invalid.
+  std::string getAccessToken();
+  ```
+- Every PR that changes behavior must update relevant documentation
+- Use examples liberally (see the `examples/` directory)
+- Keep documentation concise yet thorough—assume readers are new to M-Pesa
 
-Use examples liberally (see examples/ directory).
+## Pull Request Process
 
-Keep prose concise but thorough—assume readers are new to M-Pesa.
+1. Fork the repository and create a branch from `main`
+2. Make your changes with appropriate tests and documentation
+3. Ensure all tests and CI checks pass
+4. Submit a pull request using our [Pull Request Template](.github/PULL_REQUEST_TEMPLATE.md)
 
-🔍 Pull Request Guidelines
-Target the main branch.
+Your pull request should:
+- Link to any related issues (e.g., "Fixes #12")
+- Include tests for new functionality or bug fixes
+- Update documentation as needed
+- Pass all CI checks (formatting, tests, linters)
 
-Link to related issues (e.g., "Fixes #12").
+## Code of Conduct
 
-Include:
+This project follows our [Code of Conduct](.github/CODE_OF_CONDUCT.md) to ensure a welcoming and inclusive environment for all contributors. By participating, you agree to uphold these standards.
 
-Tests: For bugs/features.
+The Code of Conduct is based on the [Contributor Covenant 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/) and recognizes that M-Pesa serves 61M+ daily users—our community should mirror that inclusivity.
 
-Documentation: Updated README, code comments, or guides.
+---
 
-Benchmarks: If claiming performance improvements.
+Thank you for contributing to the M-Pesa C++ SDK and helping power Africa's fintech revolution!
 
-Pass all CI checks (formatting, tests, linters).
-
-🕊 Code of Conduct
-Be respectful and inclusive.
-Read our full Code of Conduct before participating.
-
-Thank you for powering Africa’s fintech revolution! 💡
 – Hayes Solo & Contributors

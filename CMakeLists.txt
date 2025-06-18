@@ -48,10 +48,10 @@ target_link_libraries(${PROJECT_NAME}
         crypto
 )
 
-option(MPESA_BUILD_TESTS "Build tests" OFF)
-option(MPESA_BUILD_DOCS "Build documentation" OFF)
+option(MPESA_BUILD_TESTS "Build tests" ON) # Default set to ON for contributors
 
-if(MPESA_BUILD_TESTS)  # Corrected condition to use option variable
+if (MPESA_BUILD_TESTS AND EXISTS "${CMAKE_SOURCE_DIR}/tests")
+
     enable_testing()
     add_subdirectory(tests)
     message(STATUS "Building tests")

@@ -18,16 +18,14 @@ jobs:
             build-essential \
             g++ \
             git \
-            libgtest-dev \
-            googletest
-          # Build and install GTest
-          cd /usr/src/googletest
-          sudo cmake .
-          sudo make
+            libgtest-dev
+          
+          # Build Google Test
+          cd /usr/src/gtest
+          sudo cmake CMakeLists.txt
+          sudo make -j$(nproc)
           sudo cp lib/*.a /usr/lib
-          sudo ln -s /usr/lib/libgtest.a /usr/local/lib/libgtest.a
-          sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/libgtest_main.a
-          cd -
+          main
           # Install nlohmann/json
           sudo mkdir -p /usr/local/include/nlohmann
           sudo wget -q https://github.com/nlohmann/json/releases/download/v3.11.2/json.hpp -O /usr/local/include/nlohmann/json.hpp
@@ -40,10 +38,7 @@ jobs:
         run: cd build && make -j$(nproc)
 
       - name: Run Unit Tests
-        run: |
-          cd build
-          if [ -f ./tests/unit_tests ]; then
-            ./tests/unit_tests
-          else
-            echo "Tests not found, skipping."
-          fi
+    
+
+        run: cd build && ./tests/unit_tests
+ main
