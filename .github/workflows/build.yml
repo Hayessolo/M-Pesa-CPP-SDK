@@ -25,20 +25,19 @@ jobs:
           sudo cmake CMakeLists.txt
           sudo make -j$(nproc)
           sudo cp lib/*.a /usr/lib
-          main
+          
           # Install nlohmann/json
           sudo mkdir -p /usr/local/include/nlohmann
           sudo wget -q https://github.com/nlohmann/json/releases/download/v3.11.2/json.hpp -O /usr/local/include/nlohmann/json.hpp
+
       - name: Configure CMake
         run: |
           mkdir -p build
           cd build
           cmake .. -DMPESA_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
+
       - name: Build
         run: cd build && make -j$(nproc)
 
       - name: Run Unit Tests
-    
-
         run: cd build && ./tests/unit_tests
- main
