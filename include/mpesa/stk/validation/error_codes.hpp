@@ -59,7 +59,18 @@ constexpr int to_int(STKPushErrorCode code) noexcept {
  * @return Corresponding STKPushErrorCode
  */
 constexpr STKPushErrorCode from_int(int code) noexcept {
-    return static_cast<STKPushErrorCode>(code);
+    switch (code) {
+        case 0:    return STKPushErrorCode::Success;
+        case 1:    return STKPushErrorCode::InsufficientBalance;
+        case 2001: return STKPushErrorCode::InvalidInitiator;
+        case 1019: return STKPushErrorCode::TransactionExpired;
+        case 1001: return STKPushErrorCode::SubscriberLocked;
+        case 1032: return STKPushErrorCode::UserCanceled;
+        case 1025: return STKPushErrorCode::PushRequestError;
+        case 9999: return STKPushErrorCode::SystemError;
+        case 1037: return STKPushErrorCode::DSTimeout;
+        default:   return STKPushErrorCode::Unknown;
+    }
 }
 
 /**
