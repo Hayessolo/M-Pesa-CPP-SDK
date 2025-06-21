@@ -29,8 +29,10 @@ public:
     static STKCallback parseCallback(const std::string& jsonStr) {
         try {
             auto json = nlohmann::json::parse(jsonStr);
-            auto stkCallback = json["Body"]["stkCallback"];
-
+            if (!json.contains("Body") || !json["Body"].contains("stkCallback")) {
+                throw std::runtime_error("Callback JSON missing Body.stkCallback section");
+            }
+            const auto& stkCallback = json["Body"]["stkCallback"];
             STKCallback callback;
             callback.merchantRequestID = stkCallback["MerchantRequestID"];
             callback.checkoutRequestID = stkCallback["CheckoutRequestID"];
