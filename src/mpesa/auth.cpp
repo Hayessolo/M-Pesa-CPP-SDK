@@ -1,3 +1,14 @@
+/**
+ * @file auth.cpp
+ * @brief Implements the authentication logic for the M-Pesa C++ SDK.
+ *
+ * This file contains the implementation of the Auth class, which is responsible
+ * for obtaining and managing OAuth 2.0 access tokens required for interacting
+ * with the M-Pesa API. It handles token requests, automatic refresh,
+ * and error management related to authentication. It also includes helper
+ * functions for tasks like Base64 encoding and error mapping.
+ * Configuration can be loaded from files or environment variables.
+ */
 #include "mpesa/auth.h"
 #include <openssl/bio.h>
 #include <openssl/evp.h>
@@ -7,7 +18,6 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-#include <fstream>
 #include <unordered_map>
 #include <stdexcept>
 #include <filesystem>
@@ -15,13 +25,36 @@
 namespace mpesa {
 
 namespace {
-    // Callback to write CURL response to string
+    /**
+     * @brief libcurl write callback function.
+     *
+     * This function is called by libcurl to deliver received data. It appends
+     * the received data to a user-provided std::string.
+     *
+     * @param contents Pointer to the delivered data.
+     * @param size Size of each data element.
+     * @param nmemb Number of data elements.
+     * @param userp Pointer to the std::string buffer to store the data.
+     * @return The total number of bytes processed (size * nmemb).
+     */
     size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* userp) {
         userp->append((char*)contents, size * nmemb);
         return size * nmemb;
     }
 
-    // Base64 encoding using OpenSSL
+    /**
+     * @brief Encodes a string using Base64.
+     *
+     * This utility function uses OpenSSL's BIO library to perform Base64 encoding.
+     * It ensures that no newline characters are included in the output.
+     *
+     * @param input The string to be Base64 encoded.
+     * @return The Base64 encoded string.
+     * @throws std::runtime_error if OpenSSL BIO operations fail, although this specific implementation
+     *         does not explicitly throw, OpenSSL functions might have their own error handling
+     *         that could lead to termination or undefined behavior on failure if not checked.
+     *         Robust implementation should check return values of BIO_new, BIO_write etc.
+     */
     std::string base64_encode(const std::string& input) {
         BIO* bio, *b64;
         BUF_MEM* bufferPtr;
@@ -42,7 +75,15 @@ namespace {
         return result;
     }
 
-    // Map CURL errors to Auth errors
+    /**
+     * @brief Maps a CURLcode to an AuthErrorCode.
+     *
+     * Translates common libcurl error codes into SDK-specific authentication
+     * error codes for consistent error handling.
+     *
+     * @param code The CURLcode returned by a libcurl operation.
+     * @return The corresponding AuthErrorCode.
+     */
     AuthErrorCode map_curl_error(CURLcode code) {
         switch (code) {
             case CURLE_COULDNT_RESOLVE_HOST:
@@ -58,7 +99,16 @@ namespace {
         }
     }
 
-    // Map M-Pesa API errors to Auth errors
+    /**
+     * @brief Maps M-Pesa API error responses to an AuthErrorCode.
+     *
+     * Parses a JSON error response from the M-Pesa API and translates
+     * known M-Pesa error codes into SDK-specific authentication error codes.
+     *
+     * @param response The JSON response object from the M-Pesa API.
+     * @return The corresponding AuthErrorCode. Returns AuthErrorCode::SUCCESS
+     *         if no "errorCode" field is found in the response, assuming it's a success response.
+     */
     AuthErrorCode map_mpesa_error(const nlohmann::json& response) {
         if (!response.contains("errorCode")) {
             return AuthErrorCode::SUCCESS;
@@ -83,22 +133,49 @@ namespace {
         return AuthErrorCode::API_ERROR;
     }
 }
-// Constructor to initialize Auth with consumer key and secret
-Auth::Auth(std::string consumer_key, std::string consumer_secret, bool sandbox)
-    : config_{std::move(consumer_key), std::move(consumer_secret), sandbox},
-      last_error_{AuthErrorCode::SUCCESS} {}
+
+/**
+ * @brief Constructs an Auth object with explicit credentials and settings.
+ *
+ * Initializes the authentication manager with the consumer key, consumer secret,
+ * STK passkey, and environment type (sandbox or production).
+ *
+ * @param consumer_key The M-Pesa API consumer key.
+ * @param consumer_secret The M-Pesa API consumer secret.
+ * @param stk_passkey The STK push passkey.
+ * @param sandbox True if using the sandbox environment, false for production. Defaults to true.
+ */
+Auth::Auth(std::string consumer_key, std::string consumer_secret, std::string stk_passkey, bool sandbox)
+    : config_{
+          .consumer_key = std::move(consumer_key),
+          .consumer_secret = std::move(consumer_secret),
+          .sandbox = sandbox,
+          .stk_passkey = std::move(stk_passkey)
+      } {
+    last_error_ = AuthErrorCode::SUCCESS;
+}
 
 // Constructor to initialize Auth with AuthConfig
 Auth::Auth(const AuthConfig& config) 
     : config_(config),
       last_error_{AuthErrorCode::SUCCESS} {}
 
-// Get access token, refresh if necessary
-std::string Auth::getAccessToken() {
+/**
+ * @brief Retrieves the current valid access token.
+ *
+ * If the current token is invalid or expired, this method automatically
+ * attempts to refresh it by calling refreshToken().
+ *
+ * @return A string containing the valid access token.
+ * @throws AuthenticationError if token refresh fails. The error code within
+ *         AuthenticationError will indicate the specific reason for failure.
+ * @note This method is thread-safe due to the use of std::lock_guard.
+ */
+std::string Auth::getAccessToken() const {
     std::lock_guard<std::mutex> lock(token_mutex_);
     
     if (!current_token_ || !isTokenValid()) {
-        auto response = refreshToken();
+        auto response = const_cast<Auth*>(this)->refreshToken();
         if (response.error_code != AuthErrorCode::SUCCESS) {
             throw AuthenticationError("Failed to get access token", response.error_code);
         }
@@ -107,12 +184,32 @@ std::string Auth::getAccessToken() {
     return current_token_.value();
 }
 
-// Check if the current token is still valid
+/**
+ * @brief Checks if the current access token is still valid.
+ *
+ * Compares the token's expiry time with the current system time.
+ *
+ * @return True if the token is valid (i.e., has been fetched and not expired), false otherwise.
+ * @note This method itself doesn't use locks but is typically called from within
+ *       a critical section in getAccessToken().
+ */
 bool Auth::isTokenValid() const {
     return std::chrono::system_clock::now() < token_expiry_;
 }
 
-// Refresh the access token by making a request to the M-Pesa API
+/**
+ * @brief Refreshes the OAuth access token.
+ *
+ * Makes an API call to the M-Pesa authentication endpoint to obtain a new
+ * access token using the configured consumer key and secret. Updates the
+ * internal token state (`current_token_`, `token_expiry_`) upon success.
+ * Also updates `last_error_` with the status of the operation.
+ *
+ * @return An AuthResponse object containing the new token details (access_token, expires_in)
+ *         and an error_code. AuthResponse.error_code will be AuthErrorCode::SUCCESS on success.
+ * @note This method is not const because it modifies the internal token state.
+ *       It's called internally by getAccessToken() when a token refresh is needed.
+ */
 AuthResponse Auth::refreshToken() {
     CURL* curl = curl_easy_init();
     if (!curl) {
@@ -179,32 +276,65 @@ AuthResponse Auth::refreshToken() {
 
     } catch (const nlohmann::json::exception& e) {
         updateLastError(AuthErrorCode::PARSE_ERROR);
+        return AuthResponse{.error_code = AuthErrorCode::PARSE_ERROR};
     } 
 }
 
-// Get the base URL for the M-Pesa API based on the environment (sandbox or production)
+/**
+ * @brief Gets the base URL for M-Pesa API requests.
+ *
+ * Returns either the sandbox or production API base URL based on the
+ * `sandbox` flag in the AuthConfig.
+ *
+ * @return The base URL string (e.g., "https://sandbox.safaricom.co.ke" or "https://api.safaricom.co.ke").
+ */
 std::string Auth::getBaseUrl() const {
     return config_.sandbox ? SANDBOX_URL : PRODUCTION_URL;
 }
 
-// Create the authorization header for the API request
+/**
+ * @brief Creates the HTTP Authorization header for token requests.
+ *
+ * The header uses Basic Authentication, with credentials formed by
+ * Base64 encoding the "consumer_key:consumer_secret" string.
+ *
+ * @return The "Authorization: Basic <encoded_credentials>" header string.
+ */
 std::string Auth::createAuthHeader() const {
     std::string credentials = config_.consumer_key + ":" + config_.consumer_secret;
     std::string encoded = base64_encode(credentials);
     return "Authorization: Basic " + encoded;
 }
 
-// Update the last error code
+/**
+ * @brief Updates the last recorded authentication error.
+ * @param code The AuthErrorCode to set as the last error.
+ */
 void Auth::updateLastError(AuthErrorCode code) {
     last_error_ = code;
 }
 
-// Get the last error code
+/**
+ * @brief Retrieves the last recorded authentication error code.
+ * @return The last AuthErrorCode.
+ */
 AuthErrorCode Auth::getLastError() const {
     return last_error_;
 }
 
-// Load AuthConfig from a file 
+/**
+ * @brief Loads authentication configuration from a JSON file.
+ *
+ * Parses a JSON file specified by `path` and populates an AuthConfig object.
+ * The JSON file is expected to contain "consumer_key", "consumer_secret",
+ * "stk_passkey", and an optional "sandbox" boolean (defaults to true if missing).
+ *
+ * @param path The filesystem path to the JSON configuration file.
+ * @return An AuthConfig object populated from the file.
+ * @throws AuthenticationError if the file is not found, cannot be opened,
+ *         or if JSON parsing fails, or if required keys ("consumer_key", "consumer_secret", "stk_passkey") are missing.
+ *         The error code will be AuthErrorCode::CONFIG_ERROR or AuthErrorCode::PARSE_ERROR.
+ */
 AuthConfig AuthConfig::from_file(const std::string& path) {
     // Validate file path
     if (!std::filesystem::exists(path)) {
@@ -235,7 +365,7 @@ AuthConfig AuthConfig::from_file(const std::string& path) {
     }
 
     // Extract values from JSON
-    std::string consumer_key, consumer_secret;
+    std::string consumer_key, consumer_secret, stk_passkey;
     bool sandbox = true;  // Default to sandbox mode
 
     if (json.contains("consumer_key")) {
@@ -256,6 +386,15 @@ AuthConfig AuthConfig::from_file(const std::string& path) {
         );
     }
 
+    if (json.contains("stk_passkey")) {
+        stk_passkey = json["stk_passkey"].get<std::string>();
+    } else {
+        throw AuthenticationError(
+            "Missing 'stk_passkey' in config file", 
+            AuthErrorCode::CONFIG_ERROR
+        );
+    }
+
     if (json.contains("sandbox")) {
         sandbox = json["sandbox"].get<bool>();
     }
@@ -263,10 +402,26 @@ AuthConfig AuthConfig::from_file(const std::string& path) {
     return AuthConfig{
         .consumer_key = consumer_key,
         .consumer_secret = consumer_secret,
-        .sandbox = sandbox
+        .sandbox = sandbox,
+        .stk_passkey = stk_passkey
     };
 }
-// Load AuthConfig from environment variables
+
+/**
+ * @brief Loads authentication configuration from environment variables.
+ *
+ * Populates an AuthConfig object using the following environment variables:
+ * - MPESA_CONSUMER_KEY: The M-Pesa API consumer key. (Required)
+ * - MPESA_CONSUMER_SECRET: The M-Pesa API consumer secret. (Required)
+ * - MPESA_STK_PASSKEY: The STK push passkey. (Required)
+ * - MPESA_ENVIRONMENT: (Optional) Set to "production" (case-insensitive) for the production environment;
+ *                      defaults to sandbox if not set or has a different value.
+ *
+ * @return An AuthConfig object populated from environment variables.
+ * @throws AuthenticationError if any of the required environment variables (MPESA_CONSUMER_KEY,
+ *         MPESA_CONSUMER_SECRET, MPESA_STK_PASSKEY) are not set.
+ *         The error code will be AuthErrorCode::CONFIG_ERROR.
+ */
 AuthConfig AuthConfig::from_env() {
     // Helper function to get environment variable with error checking
     auto get_env = [](const char* name) -> std::optional<std::string> {
@@ -280,12 +435,13 @@ AuthConfig AuthConfig::from_env() {
     // Get required environment variables
     auto consumer_key = get_env("MPESA_CONSUMER_KEY");
     auto consumer_secret = get_env("MPESA_CONSUMER_SECRET");
+    auto stk_passkey = get_env("MPESA_STK_PASSKEY");
     auto env = get_env("MPESA_ENVIRONMENT");
 
     // Check for required credentials
-    if (!consumer_key || !consumer_secret) {
+    if (!consumer_key || !consumer_secret || !stk_passkey) {
         throw AuthenticationError(
-            "Missing required environment variables. Please set MPESA_CONSUMER_KEY and MPESA_CONSUMER_SECRET",
+            "Missing required environment variables. Please set MPESA_CONSUMER_KEY, MPESA_CONSUMER_SECRET, and MPESA_STK_PASSKEY",
             AuthErrorCode::CONFIG_ERROR
         );
     }
@@ -299,7 +455,8 @@ AuthConfig AuthConfig::from_env() {
     return AuthConfig{
         .consumer_key = *consumer_key,
         .consumer_secret = *consumer_secret,
-        .sandbox = sandbox
+        .sandbox = sandbox,
+        .stk_passkey = *stk_passkey
     };
 }
 

@@ -1,0 +1,11 @@
+{
+    "BusinessShortCode": "174379",
+    "TransactionType": "CustomerPayBillOnline",
+    "Amount": "1",
+    "PartyA": "254707484886",
+    "PartyB": "174379",
+    "PhoneNumber": "254707484886",
+    "CallBackURL": "https://example.com/callback",
+    "AccountReference": "Test",
+    "TransactionDesc": "Test Payment"
+}
