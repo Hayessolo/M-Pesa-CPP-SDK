@@ -52,8 +52,11 @@ public:
                         metadataItem.value = item["Value"].get<double>();
                     } else if (item["Value"].is_number_integer()) {
                         metadataItem.value = item["Value"].get<int64_t>();
-                    } else {
+                    } else if (item["Value"].is_string()) {
                         metadataItem.value = item["Value"].get<std::string>();
+                    } else {
+                        // Fallback: serialise the raw JSON value
+                        metadataItem.value = item["Value"].dump();
                     }
                     
                     items.push_back(metadataItem);
